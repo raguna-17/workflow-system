@@ -1,0 +1,23 @@
+import api from "../../lib/axios";
+
+
+export const login = async (data) => {
+
+    const response = await api.post(
+        "/auth/login",
+        data
+    );
+
+    return response.data;
+};
+
+
+export const register = async (data) => {
+
+    const response = await api.post(
+        "/users",
+        data
+    );
+
+    return response.data;
+};
