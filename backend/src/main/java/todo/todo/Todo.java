@@ -15,7 +15,7 @@ import todo.user.User;
 
 @Entity
 @Getter
-@Table(name = "todos")
+@Table(name = "todo")
 public class Todo {
 
     @Id
