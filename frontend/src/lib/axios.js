@@ -1,50 +1,25 @@
 import axios from "axios";
 
-
 const api = axios.create({
-
     baseURL: import.meta.env.VITE_API_URL,
-
     headers: {
         "Content-Type": "application/json",
     },
-
 });
 
+api.interceptors.request.use((config) => {
 
-api.interceptors.request.use(
-    config => {
+    const isPublic = config.url?.startsWith("/auth/");
 
-        const publicPaths = [
-            "/users",
-            "/auth/login",
-            "/auth/refresh",
-        ];
+    if (!isPublic) {
+        const token = localStorage.getItem("accessToken");
 
-
-        const isPublic =
-            publicPaths.includes(config.url);
-
-
-        if (!isPublic) {
-
-            const token =
-                localStorage.getItem("accessToken");
-
-
-            if (token) {
-
-                config.headers.Authorization =
-                    `Bearer ${token}`;
-
-            }
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
         }
-
-
-        return config;
-
     }
-);
 
+    return config;
+});
 
 export default api;

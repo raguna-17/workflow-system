@@ -40,7 +40,7 @@ function LoginPage() {
             );
 
 
-            navigate("/");
+            navigate("/transactions");
 
         } catch (err) {
 

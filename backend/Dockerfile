@@ -5,7 +5,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN gradle clean build -x test
+RUN ./gradlew clean build -x test
 
 
 # runtime stage

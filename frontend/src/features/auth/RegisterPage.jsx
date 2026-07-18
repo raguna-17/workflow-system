@@ -21,17 +21,24 @@ function RegisterPage() {
 
         e.preventDefault();
 
-
         try {
 
-            await register({
+            const response = await register({
                 email,
                 password
             });
 
+            localStorage.setItem(
+                "accessToken",
+                response.accessToken
+            );
 
-            navigate("/login");
+            localStorage.setItem(
+                "refreshToken",
+                response.refreshToken
+            );
 
+            navigate("/");
 
         } catch (err) {
 
