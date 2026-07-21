@@ -153,119 +153,71 @@ C:\USERS\ADMIN\PROJECTS\WORKFLOW-SYSTEM\FRONTEND\SRC
 
 # Workflow System
 
-## 概要
+社内申請・承認業務をWeb上で管理する業務向けワークフローシステムです。
 
-Workflow Systemは、社内申請・承認フローを管理するWebアプリケーションです。
+紙やメールで行われていた申請・承認業務をデジタル化し、申請状況の可視化、承認経路管理、権限制御を実現します。
 
-ユーザーが申請を作成し、管理者が設定したWorkflowに基づいて承認処理を行います。
+## Overview
 
-JWT認証によるユーザー認証を採用し、ユーザーのRole（権限）に応じて利用可能な機能を制御します。
+本システムでは以下の業務課題を解決します。
+
+- 承認状況の把握が困難
+- 承認確認作業の発生
+- 承認履歴の管理不足
+- 部署や役職変更による承認ルート変更の難しさ
+
+Workflow設定とRole管理により、柔軟な承認フローを構築できます。
 
 ---
 
-# 主な機能
+# Features
 
-## 認証機能
+## Authentication / Authorization
 
-JWTを利用した認証機能を提供します。
+JWT認証によるユーザー管理を実装しています。
 
-機能:
+### Features
+
 - ログイン認証
 - Access Token発行
 - JWT Bearer認証
+- Roleベースアクセス制御
 
-ログイン:
+### Roles
 
-
-POST /auth/login
-
-
-認証が必要なAPI:
-
-
-Authorization: Bearer {access_token}
-
-
-Refresh Token対応は今後追加予定です。
+|Role|権限|
+|-|-|
+|USER|申請作成、自分の申請確認、承認処理|
+|ADMIN|Workflow管理、ユーザー管理、承認設定|
 
 ---
 
-## ユーザー管理
+## Request Management
 
-ユーザー情報を管理します。
+申請から承認完了までの状態管理を行います。
 
-機能:
-- ユーザー登録
-- ユーザー取得
-- Role管理
+### Features
 
-Role:
-
-### USER
-- ログイン
 - 申請作成
-- 自分の申請確認
-- 承認処理
-
-### ADMIN
-- Workflow作成
-- 承認フロー設定
-- ユーザー管理操作
-
----
-
-## 申請機能（Request）
-
-ユーザーが承認を依頼する申請を管理します。
-
-機能:
-- 申請作成
-- 自分の申請一覧取得
-- 申請詳細取得
+- 申請一覧取得
+- 申請詳細確認
 - 申請状態管理
 
-API:
+### Status
 
-
-POST /requests
-
-GET /requests/my
-
-GET /requests/{id}
-
-
-申請状態:
-
-| 状態 | 説明 |
-|---|---|
-| SUBMITTED | 申請済み |
-| APPROVED | 承認完了 |
-| REJECTED | 却下 |
+|Status|Description|
+|-|-|
+|SUBMITTED|申請中|
+|APPROVED|承認完了|
+|REJECTED|却下|
 
 ---
 
-## Workflow機能
+## Workflow Management
 
-承認ルートを管理します。
+管理者が承認経路を設定できます。
 
-ADMINが申請に利用するWorkflowを作成します。
-
-機能:
-- Workflow作成
-- Workflow一覧取得
-- Workflow詳細取得
-- Workflow Step管理
-
-構成:
-
-
-Workflow
-
-└ WorkflowStep
-
-  └ Approver(User)
-
-例:
+Workflowは複数の承認Stepで構成されます。
 
 
 申請
@@ -277,202 +229,196 @@ Workflow
 完了
 
 
+構成:
+
+
+Workflow
+└ WorkflowStep
+└ Approver(User)
+
+
+### Features
+
+- Workflow作成
+- Workflow一覧取得
+- Workflow詳細確認
+- 承認Step設定
+
 ---
 
-## 承認機能（Approval）
+## Approval Management
 
 申請に対する承認処理を管理します。
 
-機能:
-- 承認一覧取得
+Features:
+
+- 承認待ち確認
 - 承認処理
 - 却下処理
-- 承認コメント管理
-
-API:
-
-
-GET /approvals/request/{requestId}
-
-POST /approvals/{approvalId}/approve
-
-POST /approvals/{approvalId}/reject
-
+- 承認コメント登録
+- 承認履歴管理
 
 ---
 
-## Dashboard機能
+## Dashboard
 
-ユーザーの申請状況や承認状況を表示します。
+申請・承認状況を可視化します。
 
 表示内容:
-- 申請数
+
+- 申請総数
 - 承認済み件数
 - 却下件数
 - 承認待ち件数
 
-API:
+---
+
+# Technical Highlights
+
+## Layered Architecture
+
+責務を分離したレイヤードアーキテクチャを採用しています。
 
 
-GET /dashboard
+Controller
+↓
+Service
+↓
+Repository
+↓
+Database
 
+
+### Controller
+
+HTTPリクエスト処理を担当。
+
+### Service
+
+業務ロジックを担当。
+
+- 承認ルール管理
+- 権限チェック
+- 状態変更制御
+
+### Repository
+
+データアクセスを担当。
 
 ---
 
-# 技術構成
+## Design Decisions
+
+### DTO利用
+
+Entityを直接API公開せずDTOを利用し、
+DB構造とAPI仕様を分離しています。
+
+### Flyway Migration
+
+DB変更履歴を管理し、
+環境ごとの差異を防止しています。
+
+### Role Based Authorization
+
+ユーザー権限ごとに操作範囲を制御しています。
+
+---
+
+# Tech Stack
 
 ## Backend
 
-| 技術 | 内容 |
-|---|---|
-| Java | 21 |
-| Spring Boot | 3.5 |
-| Spring Security | 6 |
-| Spring Data JPA | 使用 |
-| PostgreSQL | Database |
-| Flyway | Migration管理 |
-| JWT | jjwt 0.12.6 |
-| Lombok | 1.18.38 |
-| Gradle | Build Tool |
+|Technology|Purpose|
+|-|-|
+|Java 21|Backend|
+|Spring Boot 3.5|REST API|
+|Spring Security 6|Authentication / Authorization|
+|Spring Data JPA|Database Access|
+|PostgreSQL|Database|
+|Flyway|Migration|
+|JWT|Authentication|
+|Gradle|Build|
 
 ## Frontend
 
-| 技術 | 内容 |
-|---|---|
-| React | Vite |
-| React Router | ルーティング管理 |
-| Axios | API通信 |
-| JWT Bearer認証 | 認証方式 |
+|Technology|Purpose|
+|-|-|
+|React|UI|
+|Vite|Development|
+|React Router|Routing|
+|Axios|API Communication|
+
+## Infrastructure
+
+- Docker
+- Docker Compose
 
 ---
 
-# セットアップ
+# API
 
-## 必要環境
+REST APIとして各機能を提供しています。
 
-- Java 21
-- PostgreSQL
-- Node.js
-- Gradle
+主要機能:
 
----
+|Module|Description|
+|-|-|
+|Authentication|JWT認証|
+|User|ユーザー管理|
+|Workflow|承認フロー管理|
+|Request|申請管理|
+|Approval|承認処理|
+|Dashboard|集計表示|
 
-# データベース設定
+Swagger UI:
 
-PostgreSQLにデータベースを作成します。
-
-```sql
-CREATE DATABASE workflow;
-
-環境変数:
-
-SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/workflow
-
-SPRING_DATASOURCE_USERNAME=postgres
-
-SPRING_DATASOURCE_PASSWORD=password
-
-JWT_SECRET=your-secret-key
-起動方法
-Backend
-
-Windows:
-
-./gradlew bootRun
-
-ビルド確認:
-
-./gradlew clean build
-Frontend
-npm install
-
-npm run dev
-API仕様
-
-Swagger:
 
 http://localhost:8080/swagger-ui/index.html
 
-主要API:
 
-Auth
-POST /auth/login
-User
-POST /users
+---
 
-GET /users/{id}
-Workflow
-POST /workflows
+# Database
 
-GET /workflows
+Flywayによるマイグレーション管理を採用しています。
 
-GET /workflows/{id}
+Migration:
 
-POST /workflows/{workflowId}/steps
-Request
-POST /requests
-
-GET /requests/my
-
-GET /requests/{id}
-Approval
-GET /approvals/request/{requestId}
-
-POST /approvals/{approvalId}/approve
-
-POST /approvals/{approvalId}/reject
-Dashboard
-GET /dashboard
-データベースマイグレーション
-
-Flywayを利用しています。
-
-配置場所:
 
 src/main/resources/db/migration
 
-命名規則:
 
-V{番号}__{説明}.sql
+Example:
 
-例:
 
 V1__create_users.sql
-
 V2__create_workflows.sql
-
 V3__create_requests.sql
-
 V4__create_approvals.sql
-開発ルール
-Entity
 
-データベーステーブルとの対応を管理します。
 
-Repository
+---
 
-DBアクセス処理を担当します。
+# Setup
 
-Service
+## Backend
 
-ビジネスロジックを担当します。
+```bash
+./gradlew bootRun
+Frontend
+npm install
+npm run dev
 
-Controller
+Required:
 
-HTTPリクエスト・レスポンス処理を担当します。
-
-DTO
-
-API入出力用データを管理します。
-
-今後追加予定
-Refresh Token管理
-承認期限設定
+Java 21
+PostgreSQL
+Node.js
+Docker
+Future Improvements
+Refresh Token対応
+承認期限管理
 通知機能
-操作ログ
 ファイル添付
-部署単位の権限制御
-ユーザー一覧管理API
-Workflow編集・削除機能
-承認履歴管理
-承認待ち一覧API（自分が担当する承認一覧）
+操作ログ管理
