@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import workflow.domains.user.Role;
 import workflow.domains.user.User;
 import workflow.domains.user.UserRepository;
+
 import java.util.List;
 
 @Service
@@ -24,8 +25,10 @@ public class WorkflowService {
     /** Workflow作成 */
     public WorkflowDto.Response createWorkflow(WorkflowDto.WorkflowCreateRequest request) {
         User currentUser = getCurrentUser();
-        if (currentUser.getRole() != Role.ADMIN)
-            throw new RuntimeException("Workflow作成権限がありません");
+
+        if (currentUser.getRole() != Role.ADMIN) {
+            throw new IllegalArgumentException("Workflow作成権限がありません");
+        }
 
         Workflow workflow = new Workflow(request.name(), currentUser);
         Workflow savedWorkflow = workflowRepository.save(workflow);
@@ -39,11 +42,12 @@ public class WorkflowService {
 
     /** WorkflowStep追加 */
     public void addStep(Long workflowId, WorkflowDto.StepCreateRequest request) {
+
         Workflow workflow = workflowRepository.findById(workflowId)
-                .orElseThrow(() -> new RuntimeException("Workflowが存在しません"));
+                .orElseThrow(() -> new IllegalArgumentException("Workflowが存在しません"));
 
         User approver = userRepository.findById(request.approverId())
-                .orElseThrow(() -> new RuntimeException("承認者が存在しません"));
+                .orElseThrow(() -> new IllegalArgumentException("承認者が存在しません"));
 
         WorkflowStep step = new WorkflowStep(
                 request.stepOrder(),
@@ -57,6 +61,7 @@ public class WorkflowService {
     /** Workflow一覧 */
     @Transactional(readOnly = true)
     public List<WorkflowDto.Response> getWorkflows() {
+
         return workflowRepository.findAll().stream()
                 .map(w -> new WorkflowDto.Response(
                         w.getId(),
@@ -68,8 +73,9 @@ public class WorkflowService {
     /** Workflow詳細 */
     @Transactional(readOnly = true)
     public WorkflowDto.DetailResponse getWorkflow(Long id) {
+
         Workflow workflow = workflowRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Workflowが存在しません"));
+                .orElseThrow(() -> new IllegalArgumentException("Workflowが存在しません"));
 
         List<WorkflowDto.StepResponse> steps = workflow.getSteps().stream()
                 .map(step -> new WorkflowDto.StepResponse(
@@ -89,10 +95,13 @@ public class WorkflowService {
 
     /** JWTから現在ログインユーザー取得 */
     private User getCurrentUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        Authentication authentication =
+                SecurityContextHolder.getContext().getAuthentication();
+
         String email = authentication.getName();
 
         return userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("ユーザーが存在しません"));
+                .orElseThrow(() -> new IllegalArgumentException("ユーザーが存在しません"));
     }
 }

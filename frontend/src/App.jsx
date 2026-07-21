@@ -3,13 +3,15 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Layout from "./layouts/Layout";
 
 import LoginPage from "./features/auth/LoginPage";
-import RegisterPage from "./features/auth/RegisterPage";
+import RegisterPage from "./features/user/RegisterPage";
 
 import DashboardPage from "./features/dashboard/DashboardPage";
 
 import RequestPage from "./features/request/RequestPage";
 import ApprovalPage from "./features/approval/ApprovalPage";
+import ApprovalDetail from "./features/approval/ApprovalDetail";
 import WorkflowPage from "./features/workflow/WorkflowPage";
+import WorkflowDetail from "./features/workflow/WorkflowDetail";
 import UserPage from "./features/user/UserPage";
 
 function App() {

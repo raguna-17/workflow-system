@@ -1,30 +1,20 @@
 import { useState } from "react";
-
-import { createUser } from "./api";
-
+import { register } from "./api";
 
 function UserForm({ onSuccess }) {
 
-
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-
     const [error, setError] = useState("");
 
-
-
     const handleSubmit = async (e) => {
-
         e.preventDefault();
 
-
         try {
-
-            await createUser({
+            await register({
                 email,
                 password
             });
-
 
             setEmail("");
             setPassword("");
@@ -33,66 +23,36 @@ function UserForm({ onSuccess }) {
                 onSuccess();
             }
 
-
         } catch (err) {
-
-            setError(
-                "ユーザー作成に失敗しました"
-            );
-
+            setError("ユーザー登録に失敗しました");
         }
-
     };
 
-
-
     return (
-
         <form onSubmit={handleSubmit}>
+            <h2>ユーザー登録</h2>
 
-
-            <h2>
-                ユーザー登録
-            </h2>
-
-
-            {error && (
-                <p>{error}</p>
-            )}
-
-
+            {error && <p>{error}</p>}
 
             <input
                 type="email"
                 placeholder="メールアドレス"
                 value={email}
-                onChange={
-                    e => setEmail(e.target.value)
-                }
+                onChange={e => setEmail(e.target.value)}
             />
-
-
 
             <input
                 type="password"
                 placeholder="パスワード"
                 value={password}
-                onChange={
-                    e => setPassword(e.target.value)
-                }
+                onChange={e => setPassword(e.target.value)}
             />
-
-
 
             <button type="submit">
                 登録
             </button>
-
-
         </form>
-
     );
 }
-
 
 export default UserForm;
