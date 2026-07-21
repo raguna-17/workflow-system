@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
-import { login } from "./api";
+import { register } from "../user/api";
 
 
-function LoginPage() {
+function RegisterPage() {
+
 
     const navigate = useNavigate();
 
@@ -22,50 +23,40 @@ function LoginPage() {
 
         try {
 
-            const data = await login({
+            await register({
                 email,
                 password
             });
 
 
-            localStorage.setItem(
-                "accessToken",
-                data.accessToken
-            );
+            navigate("/login");
 
-
-            localStorage.setItem(
-                "refreshToken",
-                data.refreshToken
-            );
-
-
-            navigate("/dashboard");
 
         } catch (err) {
 
             setError(
-                "メールアドレスまたはパスワードが違います"
+                "登録に失敗しました"
             );
 
         }
+
     };
 
 
 
     return (
+
         <div>
 
             <h1>
-                ログイン
+                ユーザー登録
             </h1>
 
 
             {error && (
-                <p>
-                    {error}
-                </p>
+                <p>{error}</p>
             )}
+
 
 
             <form onSubmit={handleSubmit}>
@@ -92,21 +83,22 @@ function LoginPage() {
 
 
                 <button type="submit">
-                    ログイン
+                    登録
                 </button>
 
 
             </form>
 
 
-            <Link to="/register">
-                アカウント作成はこちら
+            <Link to="/login">
+                ログインはこちら
             </Link>
 
 
         </div>
+
     );
 }
 
 
-export default LoginPage;
+export default RegisterPage;

@@ -4,16 +4,24 @@ const Sidebar = () => {
 
     const menu = [
         {
-            name: "取引一覧",
-            path: "/transactions"
+            name: "ダッシュボード",
+            path: "/dashboard"
         },
         {
-            name: "カテゴリ管理",
-            path: "/categories"
+            name: "申請一覧",
+            path: "/requests"
         },
         {
-            name: "収支分析",
-            path: "/summary"
+            name: "承認管理",
+            path: "/approvals"
+        },
+        {
+            name: "ワークフロー管理",
+            path: "/workflows"
+        },
+        {
+            name: "ユーザー管理",
+            path: "/users"
         }
     ];
 
@@ -21,7 +29,7 @@ const Sidebar = () => {
         <aside className="sidebar">
 
             <h2 className="sidebar-title">
-                家計簿
+                workflow-system
             </h2>
 
             <nav className="sidebar-nav">

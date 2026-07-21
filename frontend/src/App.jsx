@@ -5,26 +5,48 @@ import Layout from "./layouts/Layout";
 import LoginPage from "./features/auth/LoginPage";
 import RegisterPage from "./features/auth/RegisterPage";
 
-import TransactionPage from "./features/transactions/TransactionPage";
-import CategoryPage from "./features/categories/CategoryPage";
-import SummaryPage from "./features/summary/SummaryPage";
+import DashboardPage from "./features/dashboard/DashboardPage";
+
+import RequestPage from "./features/request/RequestPage";
+import ApprovalPage from "./features/approval/ApprovalPage";
+import WorkflowPage from "./features/workflow/WorkflowPage";
+import UserPage from "./features/user/UserPage";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
 
-        {/* 認証不要ページ */}
+        {/* 認証不要 */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
 
-        {/* ログイン後ページ */}
+        {/* 認証後 */}
         <Route path="/" element={<Layout />}>
-          <Route index element={<Navigate to="/transactions" />} />
 
-          <Route path="transactions" element={<TransactionPage />} />
-          <Route path="categories" element={<CategoryPage />} />
-          <Route path="summary" element={<SummaryPage />} />
+          {/* 初期ページ */}
+          <Route index element={<Navigate to="/dashboard" replace />} />
+
+          <Route path="dashboard" element={<DashboardPage />} />
+
+          <Route path="requests" element={<RequestPage />} />
+
+          <Route path="approvals" element={<ApprovalPage />} />
+
+          <Route
+            path="/approvals/:id"
+            element={<ApprovalDetail />}
+          />
+
+          <Route path="workflows" element={<WorkflowPage />} />
+
+          <Route
+            path="workflows/:id"
+            element={<WorkflowDetail />}
+          />
+
+          <Route path="users" element={<UserPage />} />
+
         </Route>
 
       </Routes>
