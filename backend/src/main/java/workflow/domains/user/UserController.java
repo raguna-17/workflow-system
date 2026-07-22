@@ -1,6 +1,7 @@
 package workflow.domains.user;
 
 import jakarta.validation.Valid;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -60,6 +61,14 @@ public class UserController {
 
 
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<UserDto.Response>> getUsers() {
+
+        return ResponseEntity.ok(
+                userService.getUsers()
+        );
     }
 
 }

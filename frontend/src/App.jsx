@@ -8,6 +8,7 @@ import RegisterPage from "./features/user/RegisterPage";
 import DashboardPage from "./features/dashboard/DashboardPage";
 
 import RequestPage from "./features/request/RequestPage";
+import RequestDetail from "./features/request/RequestDetail";
 import ApprovalPage from "./features/approval/ApprovalPage";
 import ApprovalDetail from "./features/approval/ApprovalDetail";
 import WorkflowPage from "./features/workflow/WorkflowPage";
@@ -32,6 +33,10 @@ function App() {
           <Route path="dashboard" element={<DashboardPage />} />
 
           <Route path="requests" element={<RequestPage />} />
+          <Route
+            path="/requests/:id"
+            element={<RequestDetail />}
+          />
 
           <Route path="approvals" element={<ApprovalPage />} />
 

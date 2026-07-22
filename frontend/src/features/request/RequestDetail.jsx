@@ -1,190 +1,50 @@
-import {
-    useEffect,
-    useState
-} from "react";
-
-import {
-    useParams
-} from "react-router-dom";
-
-
-import api from "../../lib/axios";
-
-
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { getRequestDetail } from "./api";
 
 function RequestDetail() {
-
-
     const { id } = useParams();
-
-
     const [request, setRequest] = useState(null);
-
-
     const [error, setError] = useState("");
 
-
-
-
-
-    const loadRequest = async () => {
-
-
-        try {
-
-
-            const response = await api.get(
-
-                `/requests/${id}`
-
-            );
-
-
-            setRequest(response.data);
-
-
-
-        } catch (err) {
-
-
-            setError(
-                "申請取得に失敗しました"
-            );
-
-
-        }
-
-
-    };
-
-
-
-
-
     useEffect(() => {
-
+        const loadRequest = async () => {
+            try {
+                const data = await getRequestDetail(id);
+                setRequest(data);
+            } catch (err) {
+                setError("申請取得に失敗しました");
+            }
+        };
 
         loadRequest();
-
-
     }, [id]);
 
-
-
-
-
-
-
     if (error) {
-
-        return (
-
-            <p>
-                {error}
-            </p>
-
-        );
-
+        return <p>{error}</p>;
     }
-
-
-
-
 
     if (!request) {
-
-        return (
-
-            <p>
-                読み込み中...
-            </p>
-
-        );
-
+        return <p>読み込み中...</p>;
     }
 
-
-
-
-
-
-
     return (
-
         <div>
+            <h1>申請詳細</h1>
 
+            <p>ID: {request.id}</p>
 
-            <h1>
-                申請詳細
-            </h1>
+            <p>タイトル: {request.title}</p>
 
+            <p>内容: {request.content}</p>
 
+            <p>状態: {request.status}</p>
 
-            <p>
+            <p>ワークフローID: {request.workflowId}</p>
 
-                ID:
-                {request.id}
-
-            </p>
-
-
-
-            <p>
-
-                タイトル:
-                {request.title}
-
-            </p>
-
-
-
-
-            <p>
-
-                内容:
-                {request.content}
-
-            </p>
-
-
-
-
-            <p>
-
-                状態:
-                {request.status}
-
-            </p>
-
-
-
-
-            <p>
-
-                ワークフローID:
-                {request.workflowId}
-
-            </p>
-
-
-
-
-            <p>
-
-                作成日時:
-                {
-                    request.createdAt
-                }
-
-            </p>
-
-
-
+            <p>作成日時: {request.createdAt}</p>
         </div>
-
     );
-
 }
-
 
 export default RequestDetail;

@@ -8,16 +8,16 @@ const Sidebar = () => {
             path: "/dashboard"
         },
         {
+            name: "ワークフロー管理",
+            path: "/workflows"
+        },
+        {
             name: "申請一覧",
             path: "/requests"
         },
         {
             name: "承認管理",
             path: "/approvals"
-        },
-        {
-            name: "ワークフロー管理",
-            path: "/workflows"
         },
         {
             name: "ユーザー管理",
@@ -27,15 +27,12 @@ const Sidebar = () => {
 
     return (
         <aside className="sidebar">
-
             <h2 className="sidebar-title">
                 workflow-system
             </h2>
 
             <nav className="sidebar-nav">
-
                 {menu.map(item => (
-
                     <Link
                         key={item.path}
                         to={item.path}
@@ -43,11 +40,8 @@ const Sidebar = () => {
                     >
                         {item.name}
                     </Link>
-
                 ))}
-
             </nav>
-
         </aside>
     );
 };

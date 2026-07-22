@@ -4,6 +4,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
 public class UserService {
@@ -66,5 +68,19 @@ public class UserService {
                 user.getEmail(),
                 user.getRole()
         );
+    }
+
+
+    @Transactional(readOnly = true)
+    public List<UserDto.Response> getUsers() {
+
+        return userRepository.findAll()
+                .stream()
+                .map(user -> new UserDto.Response(
+                        user.getId(),
+                        user.getEmail(),
+                        user.getRole()
+                ))
+                .toList();
     }
 }

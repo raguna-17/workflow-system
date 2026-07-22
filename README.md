@@ -1,224 +1,72 @@
-User
- ↓
-Workflow「どういう順番で承認するか」を管理します。
- ↓
-Requestここが業務データの中心です。
- ↓
-Approval実際の承認履歴
- ↓
- ↓
-Dashboard最後に見る画面。
-
-
- PS C:\Users\admin\projects\workflow-system\backend> tree /f
-フォルダー パスの一覧
-ボリューム シリアル番号は 30F0-F15D です
-C:.
-│  .dockerignore
-│  build.gradle
-│  docker-compose.yml
-│  Dockerfile
-│  gradlew
-│  gradlew.bat
-│  
-│          
-└─src
-    ├─main
-    │  ├─java
-    │  │  └─workflow
-    │  │      │  WorkflowApplication.java
-    │  │      │  
-    │  │      ├─auth
-    │  │      │      AuthController.java
-    │  │      │      AuthDto.java
-    │  │      │      AuthService.java
-    │  │      │      
-    │  │      ├─domains
-    │  │      │  ├─approval
-    │  │      │  │      Approval.java
-    │  │      │  │      ApprovalController.java
-    │  │      │  │      ApprovalDto.java
-    │  │      │  │      ApprovalRepository.java
-    │  │      │  │      ApprovalService.java
-    │  │      │  │      ApprovalStatus.java
-    │  │      │  │      
-    │  │      │  ├─dashboard
-    │  │      │  │      DashboardController.java
-    │  │      │  │      DashboardService.java
-    │  │      │  │      
-    │  │      │  ├─request
-    │  │      │  │      Request.java
-    │  │      │  │      RequestController.java
-    │  │      │  │      RequestDto.java
-    │  │      │  │      RequestRepository.java
-    │  │      │  │      RequestService.java
-    │  │      │  │      RequestStatus.java
-    │  │      │  │      
-    │  │      │  ├─user
-    │  │      │  │      Role.java
-    │  │      │  │      User.java
-    │  │      │  │      UserController.java
-    │  │      │  │      UserDto.java
-    │  │      │  │      UserRepository.java
-    │  │      │  │      UserService.java
-    │  │      │  │      
-    │  │      │  └─workflow
-    │  │      │          Workflow.java
-    │  │      │          WorkflowController.java
-    │  │      │          WorkflowDto.java
-    │  │      │          WorkflowRepository.java
-    │  │      │          WorkflowService.java
-    │  │      │          WorkflowStep.java
-    │  │      │          
-    │  │      └─security
-    │  │              CustomUserDetailsService.java
-    │  │              JwtAuthenticationFilter.java
-    │  │              JwtProvider.java
-    │  │              SecurityConfig.java
-    │  │              
-    │  └─resources
-    │      │  application.yml
-    │      │  
-    │      └─db
-    │          └─migration
-    │                  V1__create_users.sql
-    │                  V2__create_workflows.sql
-    │                  V3__create_requests.sql
-    │                  V4__create_approvals.sql
-    │                  
- 
-C:\USERS\ADMIN\PROJECTS\WORKFLOW-SYSTEM\FRONTEND\SRC
-│  App.css
-│  App.jsx
-│  index.css
-│  main.jsx
-│  
-├─assets
-│      hero.png
-│      react.svg
-│      vite.svg
-│      
-├─components
-│      Button.jsx
-│      Input.jsx
-│      Modal.jsx
-│      Spinner.jsx
-│      
-├─features
-│  ├─approval
-│  │      api.js
-│  │      ApprovalDetail.jsx
-│  │      ApprovalPage.jsx
-│  │      
-│  ├─auth
-│  │      api.js
-│  │      LoginPage.jsx
-│  │      
-│  │      
-│  ├─dashboard
-│  │      api.js
-│  │      DashboardPage.jsx
-│  │      
-│  ├─request
-│  │      api.js
-│  │      RequestDetail.jsx
-│  │      RequestForm.jsx
-│  │      RequestPage.jsx
-│  │      
-│  ├─user
-│  │      api.js
-          RegisterPage.jsx
-│  │      UserForm.jsx
-│  │      UserPage.jsx
-│  │      
-│  └─workflow
-│          api.js
-│          WorkflowDetail.jsx
-│          WorkflowForm.jsx
-│          WorkflowPage.jsx
-│          
-├─layouts
-│      Header.jsx
-│      Layout.jsx
-│      Sidebar.jsx
-│      
-└─lib
-        axios.js
-        
-
-
-
-
-
-
 # Workflow System
 
-社内申請・承認業務をWeb上で管理する業務向けワークフローシステムです。
+社内申請・承認業務を効率化するWebワークフローシステムです。
 
-紙やメールで行われていた申請・承認業務をデジタル化し、申請状況の可視化、承認経路管理、権限制御を実現します。
+紙やメールで行われていた申請・承認業務をWeb化し、申請状況の可視化、承認経路管理、権限制御を実現しています。
 
-## Overview
+## 概要
 
-本システムでは以下の業務課題を解決します。
+企業内の申請業務では、以下のような課題があります。
 
-- 承認状況の把握が困難
-- 承認確認作業の発生
-- 承認履歴の管理不足
-- 部署や役職変更による承認ルート変更の難しさ
+- 承認状況の確認に時間がかかる
+- 承認履歴の管理が難しい
+- 承認経路の変更に手間がかかる
 
-Workflow設定とRole管理により、柔軟な承認フローを構築できます。
+これらの課題を解決するため、申請から承認完了までを一元管理できるワークフローシステムを開発しました。
 
----
+## デモ
 
-# Features
+https://www.youtube.com/watch?v=-LqqAjInjrA
 
-## Authentication / Authorization
 
-JWT認証によるユーザー管理を実装しています。
+# 主な機能
 
-### Features
+## 認証・認可
 
+JWT認証によるユーザー管理とRoleベースのアクセス制御を実装しています。
+
+- ユーザー登録
 - ログイン認証
-- Access Token発行
-- JWT Bearer認証
-- Roleベースアクセス制御
+- JWT Token発行
+- Bearer認証
+- 権限管理
 
-### Roles
+### 権限
 
 |Role|権限|
 |-|-|
 |USER|申請作成、自分の申請確認、承認処理|
-|ADMIN|Workflow管理、ユーザー管理、承認設定|
+|ADMIN|ユーザー管理、Workflow管理、承認設定|
 
----
 
-## Request Management
+## 申請管理
 
-申請から承認完了までの状態管理を行います。
+申請作成から承認完了までの状態管理を行います。
 
-### Features
+### 機能
 
 - 申請作成
-- 申請一覧取得
+- 申請一覧表示
 - 申請詳細確認
 - 申請状態管理
 
-### Status
+### 状態管理
 
-|Status|Description|
+|状態|説明|
 |-|-|
-|SUBMITTED|申請中|
+|SUBMITTED|申請受付|
+|IN_PROGRESS|承認処理中|
 |APPROVED|承認完了|
 |REJECTED|却下|
 
----
 
-## Workflow Management
+## ワークフロー管理
 
 管理者が承認経路を設定できます。
 
-Workflowは複数の承認Stepで構成されます。
+WorkflowとWorkflowStepを分離することで、複数段階の承認フローに対応しています。
 
+例:
 
 申請
 ↓
@@ -229,56 +77,76 @@ Workflowは複数の承認Stepで構成されます。
 完了
 
 
-構成:
-
-
-Workflow
-└ WorkflowStep
-└ Approver(User)
-
-
-### Features
+### 機能
 
 - Workflow作成
 - Workflow一覧取得
-- Workflow詳細確認
 - 承認Step設定
+- 承認者設定
 
----
 
-## Approval Management
+## 承認管理
 
 申請に対する承認処理を管理します。
 
-Features:
+### 機能
 
-- 承認待ち確認
+- 承認待ち一覧取得
 - 承認処理
 - 却下処理
-- 承認コメント登録
+- コメント登録
 - 承認履歴管理
 
----
 
-## Dashboard
+## ダッシュボード
 
-申請・承認状況を可視化します。
+申請・承認状況を集計して表示します。
 
-表示内容:
+表示項目:
 
 - 申請総数
 - 承認済み件数
 - 却下件数
 - 承認待ち件数
 
----
 
-# Technical Highlights
+# 技術構成
 
-## Layered Architecture
+## Backend
 
-責務を分離したレイヤードアーキテクチャを採用しています。
+|技術|用途|
+|-|-|
+|Java 21|Backend|
+|Spring Boot 3.5|REST API|
+|Spring Security 6|認証・認可|
+|Spring Data JPA|DBアクセス|
+|PostgreSQL|Database|
+|Flyway|Migration管理|
+|JWT|認証|
+|Gradle|Build|
 
+
+## Frontend
+
+|技術|用途|
+|-|-|
+|React|UI|
+|Vite|開発環境|
+|React Router|画面遷移|
+|Axios|API通信|
+
+
+## Infrastructure
+
+- Docker
+- Docker Compose
+
+
+# 設計
+
+## レイヤードアーキテクチャ
+
+責務分離を目的として以下の構成を採用しています。
 
 Controller
 ↓
@@ -289,118 +157,54 @@ Repository
 Database
 
 
-### Controller
+### Service層
 
-HTTPリクエスト処理を担当。
+業務ロジックを担当しています。
 
-### Service
-
-業務ロジックを担当。
-
-- 承認ルール管理
+- 承認状態管理
 - 権限チェック
-- 状態変更制御
+- Workflow制御
+- 申請処理
 
-### Repository
-
-データアクセスを担当。
-
----
-
-## Design Decisions
 
 ### DTO利用
 
-Entityを直接API公開せずDTOを利用し、
-DB構造とAPI仕様を分離しています。
+Entityを直接API公開せずDTOを利用しています。
+
+目的:
+
+- DB構造とAPI仕様の分離
+- 不要なデータ公開防止
+- 保守性向上
+
 
 ### Flyway Migration
 
-DB変更履歴を管理し、
-環境ごとの差異を防止しています。
+DB変更履歴をMigrationファイルで管理しています。
 
-### Role Based Authorization
+環境ごとの差異を防ぎ、変更履歴を追跡できる構成にしています。
 
-ユーザー権限ごとに操作範囲を制御しています。
-
----
-
-# Tech Stack
-
-## Backend
-
-|Technology|Purpose|
-|-|-|
-|Java 21|Backend|
-|Spring Boot 3.5|REST API|
-|Spring Security 6|Authentication / Authorization|
-|Spring Data JPA|Database Access|
-|PostgreSQL|Database|
-|Flyway|Migration|
-|JWT|Authentication|
-|Gradle|Build|
-
-## Frontend
-
-|Technology|Purpose|
-|-|-|
-|React|UI|
-|Vite|Development|
-|React Router|Routing|
-|Axios|API Communication|
-
-## Infrastructure
-
-- Docker
-- Docker Compose
-
----
 
 # API
 
 REST APIとして各機能を提供しています。
 
-主要機能:
-
-|Module|Description|
+|Module|内容|
 |-|-|
-|Authentication|JWT認証|
+|Authentication|認証|
 |User|ユーザー管理|
-|Workflow|承認フロー管理|
+|Workflow|承認経路管理|
 |Request|申請管理|
 |Approval|承認処理|
 |Dashboard|集計表示|
 
-Swagger UI:
 
+Swagger UI:
 
 http://localhost:8080/swagger-ui/index.html
 
 
----
-
-# Database
-
-Flywayによるマイグレーション管理を採用しています。
-
-Migration:
-
-
-src/main/resources/db/migration
-
-
-Example:
-
-
-V1__create_users.sql
-V2__create_workflows.sql
-V3__create_requests.sql
-V4__create_approvals.sql
-
-
----
-
-# Setup
+# 起動方法
 
 ## Backend
 
@@ -410,16 +214,16 @@ Frontend
 npm install
 npm run dev
 ```
+必要環境:
 
-Required:
+- Java 21
+- PostgreSQL
+- Node.js
+- Docker
 
-Java 21
-PostgreSQL
-Node.js
-Docker
-Future Improvements
-Refresh Token対応
-承認期限管理
-通知機能
-ファイル添付
-操作ログ管理
+## 今後の改善予定
+- Refresh Token対応
+- 承認期限管理
+- 通知機能
+- ファイル添付
+- 操作ログ管理

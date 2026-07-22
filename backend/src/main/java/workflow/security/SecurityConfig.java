@@ -164,41 +164,26 @@ public class SecurityConfig {
 
 
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
-
-                        // CORS preflight
-                        .requestMatchers(
-                                HttpMethod.OPTIONS,
-                                "/**"
-                        )
-                        .permitAll()
-
-
-
-                        // ユーザー登録
                         .requestMatchers(
                                 HttpMethod.POST,
                                 "/users",
                                 "/auth/login"
-                        )
-                        .permitAll()
+                        ).permitAll()
 
-
-
-                        // Swagger
                         .requestMatchers(
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
                                 "/v3/api-docs/**"
-                        )
-                        .permitAll()
+                        ).permitAll()
 
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/users"
+                        ).authenticated()
 
-
-                        // その他はJWT必須
-                        .anyRequest()
-                        .authenticated()
-
+                        .anyRequest().authenticated()
                 )
 
 

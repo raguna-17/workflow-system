@@ -30,3 +30,12 @@ export const getWorkflow = async (id) => {
 
     return response.data;
 };
+
+export const addWorkflowStep = async (workflowId, data) => {
+
+    await api.post(
+        `/workflows/${workflowId}/steps`,
+        data
+    );
+
+};

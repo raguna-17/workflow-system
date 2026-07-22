@@ -13,6 +13,18 @@ export const getMyRequests = async () => {
 };
 
 
+// 申請詳細取得
+export const getRequestDetail = async (id) => {
+
+    const response = await api.get(
+        `/requests/${id}`
+    );
+
+    return response.data;
+
+};
+
+
 
 // 申請作成
 export const createRequest = async (requestData) => {
