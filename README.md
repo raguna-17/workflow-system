@@ -221,6 +221,14 @@ npm run dev
 - Node.js
 - Docker
 
+
+## テスト
+
+- JUnit 5・Mockitoによるユニットテストを実装
+- Request・Approvalを中心に正常系・異常系を検証
+- JaCoCoでコードカバレッジを測定
+
+
 ## 今後の改善予定
 - Refresh Token対応
 - 承認期限管理
