@@ -11,7 +11,7 @@ public class RequestDto {
 
 
     /**
-     * 申請作�EリクエスチE
+     * 申請作�EリクエスチE
      */
     @Getter
     @NoArgsConstructor
